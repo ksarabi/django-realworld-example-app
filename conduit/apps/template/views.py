@@ -11,5 +11,5 @@ class CreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         """Save the post data when creating a new Template."""
-        serializer.save()
+        #serializer.save()
 

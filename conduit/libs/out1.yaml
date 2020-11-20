@@ -1,0 +1,143 @@
+---
+# Source: nginx/templates/server-block-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-front-server-block
+  labels:
+    app.kubernetes.io/name: front
+    helm.sh/chart: nginx-8.0.0
+    app.kubernetes.io/instance: app
+    app.kubernetes.io/managed-by: Helm
+data:
+  server-blocks-paths.conf: |-
+    include  "/opt/bitnami/nginx/conf/server_blocks/ldap/*.conf";
+    include  "/opt/bitnami/nginx/conf/server_blocks/common/*.conf";
+---
+# Source: nginx/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-front
+  labels:
+    app.kubernetes.io/name: front
+    helm.sh/chart: nginx-8.0.0
+    app.kubernetes.io/instance: app
+    app.kubernetes.io/managed-by: Helm
+    version: 1
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: front
+    app.kubernetes.io/instance: app
+---
+# Source: nginx/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-front
+  labels:
+    app.kubernetes.io/name: front
+    helm.sh/chart: nginx-8.0.0
+    app.kubernetes.io/instance: app
+    app.kubernetes.io/managed-by: Helm
+    version: 1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: front
+      app.kubernetes.io/instance: app
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: front
+        helm.sh/chart: nginx-8.0.0
+        app.kubernetes.io/instance: app
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: front
+                    app.kubernetes.io/instance: app
+                namespaces:
+                  - build-template
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      containers:
+        - name: nginx
+          image: docker.io/ubi7-7.7:51
+          imagePullPolicy: "IfNotPresent"
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+          ports:
+            - name: http
+              containerPort: 8080
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          volumeMounts:
+            - name: nginx-server-block-paths
+              mountPath: /opt/bitnami/nginx/conf/server_blocks
+      volumes:
+        - name: nginx-server-block-paths
+          configMap:
+            name: app-front-server-block
+            items:
+              - key: server-blocks-paths.conf
+                path: server-blocks-paths.conf
+---
+# Source: nginx/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: app-front
+  labels:
+    app.kubernetes.io/name: front
+    helm.sh/chart: nginx-8.0.0
+    app.kubernetes.io/instance: app
+    app.kubernetes.io/managed-by: Helm
+    version: 1
+  annotations:
+spec:
+  rules:
+    - host: app-front.apps.omef2.omef.cloud
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: app-front
+              servicePort: http
