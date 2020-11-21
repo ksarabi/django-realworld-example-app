@@ -36,7 +36,7 @@ class TemplateSerializer(serializers.ModelSerializer):
     def runHelmScript(self,helmScript,app,chart):
         logger.error(str(helmScript) + ","+app+ ","+ chart) 
         if os.path.exists(helmScript):
-            os.chmod(helmScript, 0o755)
+            #os.chmod(helmScript, 0o755)
             try:
                 #result = subprocess.check_output([helmScript,str(app),str(chart)], shell=True)
                 result = subprocess.check_output(["{0} {1} {2}".format(helmScript,str(app),str(chart))], shell=True)

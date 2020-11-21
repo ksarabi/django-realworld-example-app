@@ -19,7 +19,7 @@ RUN apt update  && apt install git -y
 RUN helm plugin install https://github.com/Microsoft/helm-json-output --version master
 COPY . app
 RUN pip install -r app/requirements.txt && pip install  ptvsd
-RUN chown -R 10001 app /home/user &&  chmod 755 app/start.sh
+RUN chown -R 10001:root app /home/user &&  chmod 775 -R app /home/user
 EXPOSE 7000
 USER 10001
 WORKDIR app
