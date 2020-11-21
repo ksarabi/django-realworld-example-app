@@ -6,7 +6,7 @@ class Template(models.Model):
     name = models.CharField(max_length=25, blank=False, null=True)
     values = models.TextField(null=False,blank=False)
     yaml = models.TextField(null=True)
-    url = models.TextField(null=True)
+    nexus_url = models.TextField(null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
