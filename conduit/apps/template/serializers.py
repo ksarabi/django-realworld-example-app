@@ -4,6 +4,7 @@ import json
 from conduit.libs.registry import Registry
 import os,subprocess,datetime
 import requests
+import conduit.settings
 
 NEXUS_HTTP_URL = os.getenv('NEXUS_HTTP_URL', 'http://10.101.0.96:8081')
 NEXUS_URL = os.getenv('NEXUS_URL', 'https://nexus.omef.cloud:5003')
