@@ -5,6 +5,11 @@ from conduit.libs.registry import Registry
 import os,subprocess,datetime
 import requests
 
+NEXUS_HTTP_URL = os.getenv('NEXUS_HTTP_URL', 'http://10.101.0.96:8081')
+NEXUS_URL = os.getenv('NEXUS_URL', 'https://nexus.omef.cloud:5003')
+NEXUS_USER = os.getenv('NEXUS_USER', 'openshift-deployer')
+NEXUS_PASS= os.getenv('NEXUS_PASS', 'Openshift123!')
+DOCKER_HUB_URL = os.getenv('DOCKER_HUB_URL', 'https://index.docker.io')
    
 class TemplateSerializer(serializers.ModelSerializer):
     """Serializer to map the Model instance into JSON format."""
@@ -46,7 +51,7 @@ class TemplateSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("values must not be None")
             if values['releaseName'] is None :
                 raise serializers.ValidationError("values must not be None")
-            r = Registry.create(NEXUS_URL, NEXUS_USER+":"+NEXUS_PASS, False)
+            r = Registry.create(NEXUS_URL, str(NEXUS_USER)+":"+str(NEXUS_PASS), False)
             registry = self.getImageRegistry(values)
             if registry is not None:
                 values['image']['registry'] = registry
