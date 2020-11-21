@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -x    
 echo "inputs: $0,$1,$2"
 cd conduit/libs
 app=${1:-"app"}
