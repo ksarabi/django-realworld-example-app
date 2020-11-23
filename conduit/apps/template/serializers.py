@@ -87,7 +87,7 @@ class TemplateSerializer(serializers.ModelSerializer):
                 timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
                 filename = values['releaseName'] + '_' + timestamp +'.yaml'
                 os.rename(os.path.join(LIBS_PATH, "out.yaml"), os.path.join(LIBS_PATH, filename))
-                #r.uploadFile(NEXUS_HTTP_URL,os.path.join(LIBS_PATH, filename)) 
+                r.uploadFile(NEXUS_HTTP_URL,os.path.join(LIBS_PATH, filename)) 
                 nexus_url="{0}/repository/omef-raw-repo/yaml/{1}".format(NEXUS_URL[:-5],filename)
                 logger.error(nexus_url)
                 data['nexus_url'] = nexus_url
