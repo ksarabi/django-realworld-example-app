@@ -2,7 +2,6 @@ from django.contrib.auth import authenticate
 
 from rest_framework import serializers
 
-from conduit.apps.profiles.serializers import ProfileSerializer
 
 from .models import User
 
@@ -109,15 +108,7 @@ class UserSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
-    # When a field should be handled as a serializer, we must explicitly say
-    # so. Moreover, `UserSerializer` should never expose profile information,
-    # so we set `write_only=True`.
-    profile = ProfileSerializer(write_only=True)
-    
-    # We want to get the `bio` and `image` fields from the related Profile
-    # model.
-    bio = serializers.CharField(source='profile.bio', read_only=True)
-    image = serializers.CharField(source='profile.image', read_only=True)
+   
 
     class Meta:
         model = User

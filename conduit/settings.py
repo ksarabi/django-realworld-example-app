@@ -60,10 +60,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
 
-    'conduit.apps.articles',
     'conduit.apps.authentication',
     'conduit.apps.core',
-    'conduit.apps.profiles',
     'conduit.apps.template',
 ]
 
@@ -149,8 +147,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
-    '0.0.0.0:4000',
-    'localhost:4000',
+    'http://0.0.0.0:4000',
+    'http://localhost:4000',
 )
 CORS_ALLOW_HEADERS = [
     'accept',
