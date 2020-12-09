@@ -251,7 +251,7 @@ class Registry:
     def get_token(self,image_name):
         payload = {
             'service': 'registry.docker.io',
-            'scope': 'repository:library/{image}:pull'.format(image=image_name)
+            'scope': 'repository:{image}:pull'.format(image=image_name)
         }
 
         r = requests.get('https://auth.docker.io/token', params=payload)
@@ -271,7 +271,11 @@ class Registry:
         return result.json()['tags']
 
     def fetch_version(self, image_name,tag):
-        result = self.send("/v2/library/{0}/manifests/{1}".format(image_name,tag),image_name)
+        result=image_name.split('/')
+        if len(result) != 2 or result[0] == '' or result[1] == '':
+            image_name = "library/" + image_name
+
+        result = self.send("/v2/{0}/manifests/{1}".format(image_name,tag),image_name)
         if str(result).find("200") < 0 :
             return None
         return result    
