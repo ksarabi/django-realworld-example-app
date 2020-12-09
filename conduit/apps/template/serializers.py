@@ -80,7 +80,7 @@ class TemplateSerializer(serializers.ModelSerializer):
                 with open(os.path.join(LIBS_PATH, "values.json"), 'w') as outfile:
                     json.dump(values, outfile)
             else:
-                raise serializers.ValidationError({"status":"could not find image with given tag,Invalid image or tag"}) 
+                raise serializers.ValidationError("could not find image with given tag,Invalid image or tag") 
 
             logger.error(self.runHelmScript(os.path.join(LIBS_PATH, "helm.sh"),values['releaseName'],values['chartName']))
             if os.path.exists(os.path.join(LIBS_PATH, "out.yaml")) :
@@ -93,9 +93,8 @@ class TemplateSerializer(serializers.ModelSerializer):
                 data['nexus_url'] = nexus_url
             else:
                  logger.error("Could not create template")
-                 result = {"status": "Could not create yaml template"}
-                 raise serializers.ValidationError(result) 
+                 raise serializers.ValidationError("Could not create yaml template") 
         except BaseException as error:
             print('An exception occurred: {}'.format(error.with_traceback))  
-            raise serializers.ValidationError("Exception is happened: {}".format(error))         
+            raise serializers.ValidationError(error)         
         return data    

@@ -18,12 +18,16 @@ else
     exit 1    
 fi
 if [ -f "values.json" ] ; then
-  echo "helm template ${app} ${chart} -f values.json > out.yaml"
-  if  ! helm template ${app} ${chart} -f values.json > out.yaml ; then
-     #rm -f out.yaml
-     echo "Unable to call helm"
+  echo "helm template ${app} ${chart} -f values.json > app.yaml"
+  if  ! helm template ${app} ${chart} -f values.json > app.yaml ; then
+     echo "Unable to call helm ${app} ${chart}"
      exit 1
   fi
+  if  ! helm template ${app} istio -f values.json > istio.yaml ; then
+     echo "Unable to call helm ${app} istio"
+     exit 1
+  fi
+  cat app.yaml istio.yaml > out.yaml
 else
   echo "Unable to find values.json"
   exit 1

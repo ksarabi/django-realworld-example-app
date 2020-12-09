@@ -1,0 +1,72 @@
+{{ $istio := default dict .Values.istio }}
+{{- if $istio.enabled }}
+{{- $appname := include "app.name" . -}}
+{{- $name := default .Release.Name .Values.nameOverride }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: "{{ $appname }}-ingress"
+spec:
+  podSelector:
+    matchLabels:
+      app: "{{ $name }}"
+  ingress:
+    - {}
+  policyTypes:
+    - Ingress
+---    
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: "{{ $appname }}-gateway"
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ $appname }}
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - "{{ $appname }}-gateway"
+  http:
+  - match:
+    - uri:
+        prefix: "/{{ $appname }}"
+    - uri:
+        exact: "/{{ $appname }}/ping"
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        subset: {{ .Values.commonLabels.version | quote }}  
+        host: "{{ $appname }}"
+        port:
+          number: 80      
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ $appname }}
+spec:
+  host: "{{ $appname }}"
+  trafficPolicy:
+    loadBalancer:
+      simple: RANDOM
+    tls:
+      mode: ISTIO_MUTUAL
+  subsets:    
+  - name: {{ .Values.commonLabels.version | quote }}  
+    labels:
+      version: {{ .Values.commonLabels.version | quote }}    
+{{- end -}}
