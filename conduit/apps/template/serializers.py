@@ -81,7 +81,12 @@ class TemplateSerializer(serializers.ModelSerializer):
                     json.dump(values, outfile)
             else:
                 raise serializers.ValidationError("could not find image with given tag,Invalid image or tag") 
-
+            if values['commonLabels'] is None or values['image'].get('pullPolicy') is None or values['commonLabels'].get('version') is None:
+                raise serializers.ValidationError("version or image.pullPolicy must not be None") 
+            if values['image'].get('pullPolicy') != 'Always' and values['image'].get('pullPolicy') != 'IfNotPresent':
+                raise serializers.ValidationError("image.pullPolicy must be either Always or IfNotPresent") 
+            if values['service'] is None or values['service'].get('port') is None:
+                raise serializers.ValidationError("service.port must not be None")             
             logger.error(self.runHelmScript(os.path.join(LIBS_PATH, "helm.sh"),values['releaseName'],values['chartName']))
             if os.path.exists(os.path.join(LIBS_PATH, "out.yaml")) :
                 timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")

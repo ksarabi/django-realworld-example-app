@@ -28,7 +28,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "*"
+    - "{{ $appname }}.istio.omef.cloud"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -42,14 +42,9 @@ spec:
   http:
   - match:
     - uri:
-        prefix: "/{{ $appname }}"
-    - uri:
-        exact: "/{{ $appname }}/ping"
-    - uri:
         prefix: "/"
     route:
     - destination:
-        subset: {{ .Values.commonLabels.version | quote }}  
         host: "{{ $appname }}"
         port:
           number: 80      
@@ -69,4 +64,17 @@ spec:
   - name: {{ .Values.commonLabels.version | quote }}  
     labels:
       version: {{ .Values.commonLabels.version | quote }}    
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: "{{ $appname }}{{ .Values.commonLabels.version }}"
+spec:
+  hosts:
+  - "{{ $appname }}"
+  http:
+  - route:
+    - destination:
+        host: "{{ $appname }}"
+        subset: {{ .Values.commonLabels.version | quote }}        
 {{- end -}}
