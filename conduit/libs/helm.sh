@@ -4,6 +4,7 @@ cd conduit/libs
 app=${1:-"app"}
 chart=${2:-"bitnami/nginx"}
 repo=`echo ${chart}| awk -F/ '{print $1}'`
+dir=`echo ${chart}| awk -F/ '{print $NF}'`
 #rm -f out.yaml
 if [ "$repo" = "" ];then
   echo "Unable to get repo from chart:$chart"
@@ -17,6 +18,9 @@ else
     echo "Unable to find chart repo ${repo}"
     exit 1    
 fi
+if [ -d "$dir" ]; then
+  chart=$dir
+fi  
 if [ -f "values.json" ] ; then
   echo "helm template ${app} ${chart} -f values.json > app.yaml"
   if  ! helm template ${app} ${chart} -f values.json > app.yaml ; then
