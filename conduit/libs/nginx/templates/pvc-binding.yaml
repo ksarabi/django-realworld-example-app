@@ -1,0 +1,15 @@
+
+{{- if .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "common.names.fullname" . }}-binding
+spec:
+  accessModes:
+  - {{ .Values.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.storage.size }}
+  storageClassName: {{ .Values.persistence.storage.class }}
+  volumeMode: Filesystem
+{{- end }} 

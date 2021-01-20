@@ -1,0 +1,14 @@
+---
+# Source: nginx/templates/pvc-binding.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: omef-api-binding
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: gp2
+  volumeMode: Filesystem

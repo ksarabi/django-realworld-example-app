@@ -694,3 +694,4 @@ pdb:
   ## Max number of pods that can be unavailable after the eviction
   ##
   # maxUnavailable: 1
+persistence: {}
