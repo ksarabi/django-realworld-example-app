@@ -19,5 +19,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(('conduit.apps.authentication.urls', 'authentication'), namespace='authentication')),
-    url(r'^api/', include(('conduit.apps.template.urls', 'template'), namespace='template'))
+    url(r'^api/', include(('conduit.apps.template.urls', 'template'), namespace='template')),
+    url(r'^api/', include(('conduit.apps.config.urls', 'config'), namespace='config'))
 ]

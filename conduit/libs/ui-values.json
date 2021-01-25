@@ -1,0 +1,140 @@
+{
+    "name": "ui-config",
+    "content":
+    {
+        "appName":{
+        "tooltip":"The Application name"
+        },
+        "imageName":{
+        "tooltip":"The Docker Image for app Ex. bitnami/nginx."
+        },
+        "containerPort":{
+            "tooltip":"The port on which app can be reached out inside the container."
+        },
+        "servicePort":{
+            "tooltip":"The port on which the service will be listening on."
+        },
+        "version":{
+            "values":[
+                {
+                "displayValue":"V1",
+                "templateValue":"v1"
+                },
+                {
+                "displayValue":"V2",
+                "templateValue":"v2"  
+                }
+                ],
+            "tooltip":"The Application version"
+        },
+        "isIstio":{
+            "tooltip":"If istio selected then provides a service mesh \n by providing two basic pieces of architecture for your cluster, a data plane and a control plane. "
+        },
+        "tag":{
+            "values":[
+                {
+                "displayValue":"1",
+                "templateValue":"1"
+                },
+                {
+                "displayValue":"2",
+                "templateValue":"2"  
+                },
+                {
+                "displayValue":"3",
+                "templateValue":"3"
+                },
+                {
+                "displayValue":"4",
+                "templateValue":"4"  
+                },
+                {
+                "displayValue":"Latest",
+                "templateValue":"latest"  
+                }
+                ],
+            "tooltip":"The image tag"
+        },
+        "targetPlatform":{
+            "values":[
+                {
+                "displayValue":"EKS",
+                "templateValue":"eks"
+                },
+                {
+                "displayValue":"Openshift",
+                "templateValue":"openshift"  
+                }
+                ],
+            "tooltip":"The target platform"
+        },
+        "replicaCount":{
+            "tooltip":"The replication counts for app pod"
+        },
+        "cpu":{
+            "values":[
+                {
+                "displayValue":"100m",
+                "templateValue":"100m"
+                },
+                {
+                "displayValue":"250m",
+                "templateValue":"250m"  
+                },
+                {
+                 "displayValue":"500m",
+                 "templateValue":"500m"  
+                }                
+                ],
+            "tooltip":"The cpu usage limit"
+        },
+        "memory":{
+            "values":[
+                {
+                "displayValue":"64Mi",
+                "templateValue":"64Mi"
+                },
+                {
+                "displayValue":"128Mi",
+                "templateValue":"128Mi"  
+                },
+                {
+                "displayValue":"256Mi",
+                "templateValue":"256Mi"  
+                }                
+                ],
+            "tooltip":"The memory usage limit"
+        },
+        "nodeSelector":{
+            "values":[
+            {
+            "displayValue":"GPU",
+            "templateValue":"gpu"
+            },
+            {
+            "displayValue":"Standard",
+            "templateValue":"standard"  
+            },
+            {
+            "displayValue":"Cpu",
+            "templateValue":"cpu"  
+            }
+            ],
+            "tooltip":"The pod to be eligible to run on a node,\n the pod must have the indicated\nkey-value pairs as the label on the node."
+        },
+        "imagePullPolicy":{
+            "values":[
+            {
+            "displayValue":"Always",
+            "templateValue":"Always"
+            },
+            {
+            "displayValue":"IfNotPresent",
+            "templateValue":"ifNotPresent"  
+            }
+            ],
+            "tooltip":"The image policy:\n 1-Always: Always pull image from registry.\n 2-IfNotPresent: pull image if only not present."
+        }                                        
+
+    }
+}
