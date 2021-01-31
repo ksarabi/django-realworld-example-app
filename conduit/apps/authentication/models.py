@@ -127,13 +127,13 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     def _generate_jwt_token(self):
         """
         Generates a JSON Web Token that stores this user's ID and has an expiry
-        date set to 60 days into the future.
+        date set to 30 minutes into the future.
         """
-        dt = datetime.now() + timedelta(days=60)
-
+        dt = datetime.now() + timedelta(minutes=30)
+ 
         token = jwt.encode({
             'id': self.pk,
-            'exp': int(dt.strftime('%s'))
+            'exp': int(dt.timestamp())
         }, settings.SECRET_KEY, algorithm='HS256')
 
         return token.decode('utf-8')

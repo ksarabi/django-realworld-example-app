@@ -113,8 +113,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'email', 'username', 'password', 'token', 'profile', 'bio', 
-            'image',
+            'email', 'username', 'password', 'token',
         )
 
         # The `read_only_fields` option is an alternative for explicitly
@@ -156,12 +155,5 @@ class UserSerializer(serializers.ModelSerializer):
         # save the model.
         instance.save()
 
-        for (key, value) in profile_data.items():
-            # We're doing the same thing as above, but this time we're making
-            # changes to the Profile model.
-            setattr(instance.profile, key, value)
-            
-        # Save the profile just like we saved the user.
-        instance.profile.save()
 
         return instance

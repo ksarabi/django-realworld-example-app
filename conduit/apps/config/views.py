@@ -2,11 +2,13 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics, viewsets, permissions
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from .serializers import ConfigSerializer
 from .models import Config
 
 
 class ConfigViewset(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticatedOrReadOnly,) 
     queryset = Config.objects.all()
     serializer_class = ConfigSerializer
     def get_queryset(self):
@@ -15,6 +17,11 @@ class ConfigViewset(viewsets.ModelViewSet):
             return Config.objects.all()
         queryset = Config.objects.filter(name=Name)
         return queryset
+    def create(self,request):  
+        serializer = ConfigSerializer(data=request.data)
+        if serializer.is_valid():
+             serializer.save()
+        return Response(serializer.data)
 
 # @api_view(['GET','POST'])
 # def configList(request):
