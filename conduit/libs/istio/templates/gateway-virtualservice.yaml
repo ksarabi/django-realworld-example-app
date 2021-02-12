@@ -41,8 +41,10 @@ spec:
   - "{{ $appname }}-gateway"
   http:
   - match:
+{{- range .Values.istio.matchPrefix }}
     - uri:
-        prefix: "/"
+        prefix: {{ . | quote }}
+{{- end }}                
     route:
     - destination:
         host: "{{ $appname }}"

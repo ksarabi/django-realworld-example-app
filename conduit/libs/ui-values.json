@@ -6,13 +6,13 @@
         "tooltip":"The Application name"
         },
         "imageName":{
-        "tooltip":"The Docker Image for app Ex. bitnami/nginx."
+        "tooltip":"The Container (Docker) Image for app Ex. bitnami/nginx."
         },
         "containerPort":{
-            "tooltip":"The port on which app can be reached out inside the container."
+            "tooltip":"The port on which the app can be reached inside the container."
         },
         "servicePort":{
-            "tooltip":"The port on which the service will be listening on."
+            "tooltip":"The port on which the service will be listening."
         },
         "version":{
             "values":[
@@ -25,35 +25,13 @@
                 "templateValue":"v2"  
                 }
                 ],
-            "tooltip":"The Application version"
+            "tooltip":"The Application version used for deployments."
         },
         "isIstio":{
-            "tooltip":"If istio selected then provides a service mesh \n by providing two basic pieces of architecture for your cluster, a data plane and a control plane. "
+            "tooltip":"If istio is selected, it generates the Istio VirtualService, DestinationRule, and Gateway \nspecification. It supports a service mesh by specifying two basic pieces of architecture for \nyour cluster, a data plane and a control plane."
         },
         "tag":{
-            "values":[
-                {
-                "displayValue":"1",
-                "templateValue":"1"
-                },
-                {
-                "displayValue":"2",
-                "templateValue":"2"  
-                },
-                {
-                "displayValue":"3",
-                "templateValue":"3"
-                },
-                {
-                "displayValue":"4",
-                "templateValue":"4"  
-                },
-                {
-                "displayValue":"Latest",
-                "templateValue":"latest"  
-                }
-                ],
-            "tooltip":"The image tag"
+            "tooltip":"The container image tag, e.g. latest, and this tag must be in the image repository"
         },
         "targetPlatform":{
             "values":[
@@ -66,10 +44,10 @@
                 "templateValue":"openshift"  
                 }
                 ],
-            "tooltip":"The target platform"
+            "tooltip":"The targeted Kubernetes orchestration engine, e.g. AWS EKS or OpenShift."
         },
         "replicaCount":{
-            "tooltip":"The replication counts for app pod"
+            "tooltip":"The number of replicas of an app's pod."
         },
         "cpu":{
             "values":[
@@ -86,7 +64,7 @@
                  "templateValue":"500m"  
                 }                
                 ],
-            "tooltip":"The cpu usage limit"
+            "tooltip":"The cpu usage limit."
         },
         "memory":{
             "values":[
@@ -103,7 +81,7 @@
                 "templateValue":"256Mi"  
                 }                
                 ],
-            "tooltip":"The memory usage limit"
+            "tooltip":"The memory usage limit."
         },
         "nodeSelector":{
             "values":[
@@ -120,7 +98,7 @@
             "templateValue":"cpu"  
             }
             ],
-            "tooltip":"The pod to be eligible to run on a node,\n the pod must have the indicated\nkey-value pairs as the label on the node."
+            "tooltip":"For the pod to be eligible to run on a node,\n the pod must have the indicated\nkey-value pairs as the label on the node.\nThis lets you target specific node types such as a GPU for ML workloads."
         },
         "imagePullPolicy":{
             "values":[
